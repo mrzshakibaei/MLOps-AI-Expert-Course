@@ -1,0 +1,28 @@
+# GitLab exécute d'abord les tests ; l'entraînement ne démarre que s'ils passent.
+stages:
+  - test
+  - train
+
+# Environnement Python et installation partagés par tous les jobs.
+default:
+  image: python:3.11
+  before_script:
+    - python -m pip install --upgrade pip
+    - python -m pip install -e ".[dev]"
+
+# Vérifie automatiquement le comportement du projet à chaque pipeline CI.
+tests:
+  stage: test
+  script:
+    - python -m pytest
+
+# Produit le modèle et les métriques, conservés comme artefacts téléchargeables.
+train-model:
+  stage: train
+  script:
+    - python -m ml_pipeline.train --output-dir models
+  artifacts:
+    paths:
+      - models/iris_pipeline.joblib
+      - models/metrics.json
+    expire_in: 1 week

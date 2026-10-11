@@ -1,0 +1,31 @@
+# Outils nécessaires pour construire et installer le projet Python.
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# Métadonnées et dépendances requises pour exécuter entraînement et prédiction.
+[project]
+name = "tp1-classic-ml-pipeline"
+version = "0.1.0"
+description = "Pipeline de classification scikit-learn pour le TP1 MLOps"
+requires-python = ">=3.10"
+dependencies = [
+    "joblib>=1.3,<2.0",
+    "pandas>=2.0,<4.0",
+    "scikit-learn>=1.4,<2.0",
+]
+
+# Dépendances utilisées uniquement pour développer et tester le projet.
+[project.optional-dependencies]
+dev = ["pytest>=8.0,<9.0"]
+
+# Indique à setuptools que le package Python se trouve sous src/.
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# Configuration de pytest : emplacement des tests, code source importable et
+# affichage compact des résultats.
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
